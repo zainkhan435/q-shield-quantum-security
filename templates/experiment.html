@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+
+{% block title %}Threat Detection Workspace | Q-SHIELD{% endblock %}
+
+{% block head %}
+<!-- Three.js for 3D Quantum Network & Attack Simulator -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="editorial-page threat-page">
+
+    <!-- Top Investigation Header -->
+    <header class="threat-header">
+        <div class="threat-header-left">
+            <div class="kicker-pill">
+                <span class="kicker-dot"></span>
+                <span class="kicker-text">CYBERSECURITY INVESTIGATION WORKSPACE</span>
+            </div>
+            <h1 class="threat-title">QUANTUM THREAT DETECTION & AUDIT</h1>
+            <p class="threat-subtitle">
+                Inject adversarial attack vectors into the quantum digital signature channel, evaluate state collapse, 
+                and verify statistical anomaly detection against theoretical cutoffs.
+            </p>
+        </div>
+
+        <div class="threat-header-right">
+            <a href="{{ url_for('dashboard.history_view') }}" class="btn btn-outline btn-sm">
+                View Audit History →
+            </a>
+        </div>
+    </header>
+
+    <!-- ============================================================
+         SCENARIO SELECTION BAR
+    ============================================================ -->
+    <section class="scenario-selector-section">
+        <div class="scenario-grid">
+            <button class="scenario-btn active" data-scenario="Legitimate Communication" onclick="selectScenario('Legitimate Communication')">
+                <span class="sc-num">01</span>
+                <span class="sc-name">LEGITIMATE</span>
+                <span class="sc-badge badge-sec">Baseline Secure</span>
+            </button>
+
+            <button class="scenario-btn" data-scenario="Intercept & Resend" onclick="selectScenario('Intercept & Resend')">
+                <span class="sc-num">02</span>
+                <span class="sc-name">INTERCEPT & RESEND</span>
+                <span class="sc-badge badge-thr">Eve Projective Tap</span>
+            </button>
+
+            <button class="scenario-btn" data-scenario="Signature Forgery" onclick="selectScenario('Signature Forgery')">
+                <span class="sc-num">03</span>
+                <span class="sc-name">SIGNATURE FORGERY</span>
+                <span class="sc-badge badge-thr">Altered Payload</span>
+            </button>
+
+            <button class="scenario-btn" data-scenario="Replay Attack" onclick="selectScenario('Replay Attack')">
+                <span class="sc-num">04</span>
+                <span class="sc-name">REPLAY ATTACK</span>
+                <span class="sc-badge badge-warn">Nonce Reuse</span>
+            </button>
+
+            <button class="scenario-btn" data-scenario="Impersonation" onclick="selectScenario('Impersonation')">
+                <span class="sc-num">05</span>
+                <span class="sc-name">IMPERSONATION</span>
+                <span class="sc-badge badge-thr">Untrusted Signer</span>
+            </button>
+
+            <button class="scenario-btn" data-scenario="Channel Manipulation" onclick="selectScenario('Channel Manipulation')">
+                <span class="sc-num">06</span>
+                <span class="sc-name">CHANNEL MANIPULATION</span>
+                <span class="sc-badge badge-warn">Noise Injection</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         MAIN INVESTIGATION LAYOUT:
+         [ LARGE 3D QUANTUM NETWORK ] | [ ATTACK CONFIGURATION ]
+    ============================================================ -->
+    <section class="threat-main-grid">
+
+        <!-- 3D Quantum Network Viewport (Dark Visualization Panel) -->
+        <div class="threat-3d-panel">
+            <div class="threat-hud-bar">
+                <div class="threat-hud-stage">
+                    <span class="hud-label">PROTOCOL STAGE:</span>
+                    <span id="lab-overlay-stage" class="hud-value text-cyan">Ready for Security Audit</span>
+                </div>
+                <div class="threat-hud-actions">
+                    <button class="btn-hud" onclick="if(window.labNetwork3D) window.labNetwork3D.resetView()">Reset View</button>
+                    <button class="btn-hud" onclick="if(window.labNetwork3D) window.labNetwork3D.toggleAutoRotate()">Auto-Rotate</button>
+                </div>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="threat-canvas-wrapper">
+                <div id="lab-quantum-3d-canvas" class="threat-canvas"></div>
+            </div>
+
+            <!-- HUD Bottom Indicators -->
+            <div class="threat-hud-footer">
+                <div class="hud-item"><strong style="color: #0f62fe;">●</strong> Alice (Signer)</div>
+                <div class="hud-item"><strong style="color: #10b981;">●</strong> Bob (Verifier 1)</div>
+                <div class="hud-item"><strong style="color: #06b6d4;">●</strong> Charlie (Verifier 2)</div>
+                <div class="hud-item"><strong style="color: #ef4444;">●</strong> Eve (Adversary Intercept)</div>
+                <div class="hud-item"><strong style="color: #00f0ff;">━</strong> Quantum Arc</div>
+                <div class="hud-item"><strong style="color: #f59e0b;">- -</strong> Classical Feed</div>
+            </div>
+        </div>
+
+        <!-- Attack Configuration Sidebar -->
+        <div class="threat-config-panel">
+            <div class="config-header">
+                <span class="config-title">ATTACK CONFIGURATION</span>
+                <span id="pipeline-overall-status" class="config-status font-mono">STANDBY</span>
+            </div>
+
+            <form id="experiment-form" onsubmit="handleRunExperiment(event)">
+                <input type="hidden" id="attack_type" name="attack_type" value="Legitimate Communication">
+
+                <!-- Scenario Callout -->
+                <div class="threat-scenario-box">
+                    <span class="sc-box-label">ATTACK VECTOR MODEL</span>
+                    <p id="attack-info-text" class="sc-box-desc">
+                        Alice teleports valid signature state |ψ⟩ to Bob and Charlie over quantum channel with calibrated background noise.
+                    </p>
+                </div>
+
+                <!-- Simulation Shots -->
+                <div class="form-group mt-3">
+                    <label class="form-label">Simulation Shots (Sample Size N)</label>
+                    <div class="radio-pill-group">
+                        <label class="radio-pill">
+                            <input type="radio" name="shots" value="100">
+                            <span>100</span>
+                        </label>
+                        <label class="radio-pill">
+                            <input type="radio" name="shots" value="500">
+                            <span>500</span>
+                        </label>
+                        <label class="radio-pill">
+                            <input type="radio" name="shots" value="1000" checked>
+                            <span>1000</span>
+                        </label>
+                        <label class="radio-pill">
+                            <input type="radio" name="shots" value="5000">
+                            <span>5000</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Noise Level Slider -->
+                <div class="form-group mt-3">
+                    <div class="slider-header">
+                        <label for="noise_level" class="form-label">Channel Noise Level (Depolarizing)</label>
+                        <span id="noise-display" class="slider-val font-mono">2.0%</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        id="noise_level" 
+                        name="noise_level" 
+                        min="0" 
+                        max="20" 
+                        step="0.5" 
+                        value="2" 
+                        oninput="updateNoiseDisplay(this.value)"
+                    >
+                    <div class="slider-scale-row">
+                        <span>0% (Ideal)</span>
+                        <span>10% (Turbulent)</span>
+                        <span>20% (Max)</span>
+                    </div>
+                </div>
+
+                <!-- Measurement Basis -->
+                <div class="form-group mt-3">
+                    <label for="measurement_basis" class="form-label">Verification Measurement Basis</label>
+                    <select id="measurement_basis" name="measurement_basis" class="form-select">
+                        <option value="Z">Z-Basis (|0⟩ / |1⟩ Computational)</option>
+                        <option value="X">X-Basis (|+⟩ / |-⟩ Hadamard)</option>
+                        <option value="Y">Y-Basis (|+i⟩ / |-i⟩ Circular)</option>
+                        <option value="RANDOMIZED">Randomized Projection (Anti-Eavesdrop)</option>
+                    </select>
+                </div>
+
+                <!-- Backend -->
+                <div class="form-group mt-3">
+                    <label for="execution_backend" class="form-label">Target Quantum Backend</label>
+                    <select id="execution_backend" name="execution_backend" class="form-select">
+                        <option value="Local Qiskit Aer Simulator">Local Qiskit Aer Simulator</option>
+                        <option value="IBM Quantum Hardware">IBM Quantum Hardware (Cloud Dispatch)</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="run-exp-btn" class="btn btn-primary btn-full btn-lg mt-4">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span>EXECUTE ATTACK AUDIT</span>
+                </button>
+            </form>
+        </div>
+
+    </section>
+
+    <!-- ============================================================
+         BOTTOM FORENSIC EVIDENCE & VERDICT BAR
+    ============================================================ -->
+    <section id="result-card" class="evidence-verdict-section" style="display: none;">
+        
+        <!-- Strong Final Verdict Banner -->
+        <div id="verdict-banner" class="verdict-banner-box verdict-secure">
+            <div class="verdict-top-row">
+                <span class="verdict-label">FINAL DETERMINISTIC AUDIT VERDICT:</span>
+                <span id="res-timestamp" class="verdict-timestamp font-mono">--:--:-- UTC</span>
+            </div>
+            <div class="verdict-main-row">
+                <h2 id="res-threat-status" class="verdict-status-title">SECURE</h2>
+                <span id="res-verification" class="verdict-tag tag-success">VERIFICATION SUCCESSFUL</span>
+            </div>
+            <p id="res-reason" class="verdict-reason-text">
+                Quantum state verified within tolerable background decoherence bounds.
+            </p>
+        </div>
+
+        <!-- Evidence Grid -->
+        <div class="evidence-metrics-grid mt-4">
+            <div class="evidence-cell">
+                <span class="ev-label">OBSERVED QBER</span>
+                <span id="res-qber" class="ev-val font-mono">--%</span>
+                <span class="ev-sub">Cutoff Threshold: 11.0%</span>
+            </div>
+
+            <div class="evidence-cell">
+                <span class="ev-label">EXPECTED ERROR</span>
+                <span id="res-expected" class="ev-val font-mono">--%</span>
+                <span class="ev-sub">Calibrated noise baseline</span>
+            </div>
+
+            <div class="evidence-cell">
+                <span class="ev-label">OBSERVED ERROR</span>
+                <span id="res-observed" class="ev-val font-mono">--%</span>
+                <span class="ev-sub">Bob measured error rate</span>
+            </div>
+
+            <div class="evidence-cell">
+                <span class="ev-label">STATISTICAL DEVIATION</span>
+                <span id="res-z-score" class="ev-val font-mono">--σ</span>
+                <span id="res-z-badge" class="ev-sub">Confidence Limit: 3.0σ</span>
+            </div>
+
+            <div class="evidence-cell">
+                <span class="ev-label">THRESHOLD</span>
+                <span class="ev-val font-mono">3.00σ</span>
+                <span class="ev-sub">p &lt; 0.0027 confidence</span>
+            </div>
+
+            <div class="evidence-cell">
+                <span class="ev-label">SIGNATURE NONCE</span>
+                <span id="res-nonce" class="ev-val font-mono text-sm">--</span>
+                <span id="res-nonce-status" class="ev-sub">Single-use anti-replay token</span>
+            </div>
+        </div>
+
+        <!-- Measurement Counts Breakdown -->
+        <div class="counts-breakdown-row mt-4">
+            <div class="counts-header">
+                <span class="counts-title">BOB PROJECTIVE MEASUREMENT COUNTS (COLLAPSED PARITY)</span>
+                <span id="res-counts-total" class="font-mono text-sm">Total Shots: 1000</span>
+            </div>
+            <div class="counts-bars-container">
+                <div class="c-bar-group">
+                    <div class="c-bar-label font-mono">Outcome |0⟩ (Target Eigenstate)</div>
+                    <div class="c-track"><div id="res-bar-0" class="c-fill fill-secure" style="width: 50%;"></div></div>
+                    <span id="res-val-0" class="c-val font-mono">500</span>
+                </div>
+                <div class="c-bar-group">
+                    <div class="c-bar-label font-mono">Outcome |1⟩ (Orthogonal / Error)</div>
+                    <div class="c-track"><div id="res-bar-1" class="c-fill fill-danger" style="width: 50%;"></div></div>
+                    <span id="res-val-1" class="c-val font-mono">500</span>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/quantum_network_3d.js') }}"></script>
+<script src="{{ url_for('static', filename='js/experiment.js') }}"></script>
+<script>
+    // Scenario button selection helper
+    function selectScenario(scenarioName) {
+        document.querySelectorAll('.scenario-btn').forEach(btn => {
+            if (btn.getAttribute('data-scenario') === scenarioName) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        document.getElementById('attack_type').value = scenarioName;
+        onAttackTypeChange(scenarioName);
+    }
+</script>
+{% endblock %}

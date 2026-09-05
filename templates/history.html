@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Security History Audit Log | Q-SHIELD{% endblock %}
+
+{% block content %}
+<div class="editorial-page history-page">
+
+    <!-- Header -->
+    <header class="history-header">
+        <div class="history-header-left">
+            <div class="kicker-pill">
+                <span class="kicker-dot"></span>
+                <span class="kicker-text">IMMUTABLE CRYPTOGRAPHIC AUDIT LOG</span>
+            </div>
+            <h1 class="history-title">SECURITY EVENT HISTORY</h1>
+            <p class="history-subtitle">
+                Comprehensive persistent record of all quantum digital signature sessions, observed QBER, 
+                binomial statistical anomaly tests, and deterministic intrusion decisions.
+            </p>
+        </div>
+
+        <div class="history-header-right">
+            <a href="{{ url_for('dashboard.experiment_view') }}" class="btn btn-primary">
+                + Run Security Experiment
+            </a>
+        </div>
+    </header>
+
+    <!-- Filter & Summary Strip -->
+    <div class="history-toolbar-bar">
+        <div class="toolbar-left">
+            <div class="filter-item">
+                <label for="filter-status" class="filter-label">Filter Threat Status:</label>
+                <select id="filter-status" class="form-select select-sm" onchange="loadHistory(1)">
+                    <option value="">All Security Events</option>
+                    <option value="SECURE">SECURE (Baseline)</option>
+                    <option value="ATTACK DETECTED">ATTACK DETECTED (Intrusion)</option>
+                    <option value="REPLAY DETECTED">REPLAY DETECTED (Replay)</option>
+                    <option value="SIGNATURE INVALID">SIGNATURE INVALID (Forgery)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="toolbar-right">
+            <span id="history-total-count" class="font-mono text-sm text-muted">Retrieving audit records...</span>
+        </div>
+    </div>
+
+    <!-- Table Surface (Crisp White Editorial Table) -->
+    <div class="history-table-surface">
+        <div class="table-responsive">
+            <table class="editorial-table">
+                <thead>
+                    <tr>
+                        <th>TIME</th>
+                        <th>SCENARIO</th>
+                        <th>QBER</th>
+                        <th>VERIFICATION</th>
+                        <th>THREAT STATUS</th>
+                        <th>BACKEND</th>
+                        <th>ACTION</th>
+                    </tr>
+                </thead>
+                <tbody id="history-table-body">
+                    <tr>
+                        <td colspan="7" class="table-empty">Loading cryptographic records...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="pagination-footer">
+            <button id="prev-page-btn" class="btn btn-outline-xs" onclick="changePage(-1)" disabled>← Previous</button>
+            <span id="page-indicator" class="page-info font-mono">Page 1 of 1</span>
+            <button id="next-page-btn" class="btn btn-outline-xs" onclick="changePage(1)" disabled>Next →</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- Forensic Investigation Drawer / Modal -->
+<div id="detail-modal" class="drawer-overlay" style="display: none;" onclick="closeModalOnBackdrop(event)">
+    <div class="drawer-dialog" onclick="event.stopPropagation()">
+        <div class="drawer-header">
+            <div>
+                <span class="drawer-kicker">FORENSIC AUDIT FILE</span>
+                <h3 class="drawer-title" id="modal-title">Session Audit Details</h3>
+                <span id="modal-timestamp" class="drawer-timestamp font-mono">--:--:-- UTC</span>
+            </div>
+            <button type="button" class="drawer-close-btn" onclick="closeDetailModal()">&times;</button>
+        </div>
+
+        <div class="drawer-body" id="modal-content">
+            <!-- Dynamically populated -->
+        </div>
+
+        <div class="drawer-footer">
+            <button type="button" class="btn btn-outline btn-sm" onclick="closeDetailModal()">Close File</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/history.js') }}"></script>
+{% endblock %}

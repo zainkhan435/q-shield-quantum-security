@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+
+{% block title %}Q-SHIELD | Quantum Security Operations{% endblock %}
+
+{% block head %}
+<!-- Three.js for 3D Quantum Globe & Bloch Sphere -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="editorial-page dashboard-page">
+    
+    <!-- ============================================================
+         HERO SECTION: EDITORIAL HEADLINE + 3D QUANTUM NETWORK GLOBE
+    ============================================================ -->
+    <section class="hero-section">
+        <div class="hero-grid">
+            <!-- Left Editorial Text Column -->
+            <div class="hero-editorial">
+                <div class="kicker-pill">
+                    <span class="kicker-dot"></span>
+                    <span class="kicker-text">SIH26141 · QUANTUM SECURITY OPERATIONS</span>
+                </div>
+                
+                <h1 class="hero-title">Q-SHIELD</h1>
+                <p class="hero-tagline">QUANTUM DIGITAL SIGNATURE PROTOCOL SECURITY</p>
+                
+                <p class="hero-description">
+                    Detecting threats to quantum digital signatures through quantum projective measurement, 
+                    entanglement verification, and binomial statistical hypothesis testing.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="{{ url_for('dashboard.experiment_view') }}" class="btn btn-primary btn-lg">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        RUN SECURITY EXPERIMENT
+                    </a>
+                    <a href="{{ url_for('dashboard.lab_view') }}" class="btn btn-outline btn-lg">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                        EXPLORE QUANTUM LAB
+                    </a>
+                </div>
+
+                <div class="hero-badges">
+                    <div class="badge-item">
+                        <span class="badge-label">SIMULATOR ENGINE</span>
+                        <span class="badge-val">Qiskit Aer 2.5</span>
+                    </div>
+                    <div class="badge-divider"></div>
+                    <div class="badge-item">
+                        <span class="badge-label">CONFIDENCE LIMIT</span>
+                        <span class="badge-val">Z ≥ 3.0σ (99.7%)</span>
+                    </div>
+                    <div class="badge-divider"></div>
+                    <div class="badge-item">
+                        <span class="badge-label">NETWORK NODES</span>
+                        <span class="badge-val">Alice · Bob · Charlie</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Signature 3D Quantum Globe / Network Centerpiece -->
+            <div class="hero-globe-container">
+                <div class="globe-viewport-card">
+                    <div class="globe-hud-top">
+                        <div class="stage-pill">
+                            <span class="stage-prefix">PROTOCOL:</span>
+                            <span id="overlay-stage-text" class="stage-name">01 STATE PREPARATION: Alice preparing state |ψ⟩</span>
+                        </div>
+                        <div class="globe-camera-actions">
+                            <button class="btn-hud" onclick="if(window.network3D) window.network3D.resetView()" title="Reset 3D Camera">Reset View</button>
+                            <button class="btn-hud" onclick="if(window.network3D) window.network3D.toggleAutoRotate()" title="Toggle Auto-Rotation">Auto-Rotate</button>
+                        </div>
+                    </div>
+
+                    <!-- 3D Canvas Target -->
+                    <div id="quantum-3d-canvas" class="globe-3d-canvas"></div>
+
+                    <!-- HUD Bottom Legend -->
+                    <div class="globe-hud-bottom">
+                        <div class="hud-legend-item"><span class="dot dot-alice">●</span> Alice (Signer)</div>
+                        <div class="hud-legend-item"><span class="dot dot-bob">●</span> Bob (Verifier 1)</div>
+                        <div class="hud-legend-item"><span class="dot dot-charlie">●</span> Charlie (Verifier 2)</div>
+                        <div class="hud-legend-item"><span class="dot dot-eve">●</span> Eve (Adversary)</div>
+                        <div class="hud-legend-item"><span class="line line-quantum">━</span> Quantum Arc</div>
+                        <div class="hud-legend-item"><span class="line line-classical">- -</span> Classical (c₀, c₁)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         COMPACT HORIZONTAL TELEMETRY STRIP (NO CARD OVERLOAD)
+    ============================================================ -->
+    <section class="telemetry-strip-section">
+        <div class="telemetry-strip">
+            <div class="telemetry-cell">
+                <span class="telemetry-label">OBSERVED QBER</span>
+                <div class="telemetry-val-group">
+                    <span id="metric-qber" class="telemetry-val">--%</span>
+                    <span id="metric-qber-badge" class="telemetry-pill pill-neutral">Calibrating</span>
+                </div>
+                <span class="telemetry-sub">Cutoff Threshold: 11.0%</span>
+            </div>
+
+            <div class="telemetry-cell">
+                <span class="telemetry-label">VERIFICATION</span>
+                <div class="telemetry-val-group">
+                    <span id="metric-validity" class="telemetry-val">STANDBY</span>
+                </div>
+                <span class="telemetry-sub">Digital signature parity</span>
+            </div>
+
+            <div class="telemetry-cell">
+                <span class="telemetry-label">THREAT STATUS</span>
+                <div class="telemetry-val-group">
+                    <span id="metric-threat-status" class="telemetry-pill pill-secure">SECURE</span>
+                </div>
+                <span id="metric-reason" class="telemetry-sub">Nominal quantum channel</span>
+            </div>
+
+            <div class="telemetry-cell">
+                <span class="telemetry-label">BACKEND ENGINE</span>
+                <div class="telemetry-val-group">
+                    <span id="metric-backend" class="telemetry-val font-mono">QISKIT AER</span>
+                </div>
+                <span class="telemetry-sub">AerSimulator (Statevector)</span>
+            </div>
+
+            <div class="telemetry-cell">
+                <span class="telemetry-label">STATISTICAL Z-SCORE</span>
+                <div class="telemetry-val-group">
+                    <span id="metric-z-score" class="telemetry-val">0.00σ</span>
+                    <span id="metric-z-tag" class="telemetry-pill pill-neutral">Nominal</span>
+                </div>
+                <span class="telemetry-sub">Confidence Limit: 3.0σ</span>
+            </div>
+
+            <div class="telemetry-cell">
+                <span class="telemetry-label">FIDELITY / ACCURACY</span>
+                <div class="telemetry-val-group">
+                    <span id="metric-accuracy" class="telemetry-val">100.0%</span>
+                </div>
+                <span class="telemetry-sub">Target eigenstate overlap</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         RECENT SECURITY EVENT ROW
+    ============================================================ -->
+    <section class="recent-event-section">
+        <div class="event-strip-container">
+            <div class="event-strip-header">
+                <span class="event-strip-title">RECENT AUDIT TRAIL</span>
+                <a href="{{ url_for('dashboard.history_view') }}" class="event-strip-link">View Full Audit History →</a>
+            </div>
+            <div id="recent-events-stream" class="event-stream-row">
+                <div class="event-item-placeholder">Loading recent cryptographic verification events...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         EDITORIAL SPLIT: PROTOCOL SEQUENCE & INTERACTIVE BLOCH PREVIEW
+    ============================================================ -->
+    <section class="editorial-split-section">
+        <div class="split-grid">
+            
+            <!-- Left: Teleportation Protocol Pipeline -->
+            <div class="editorial-panel">
+                <div class="panel-header">
+                    <div class="panel-kicker">STAGE EXECUTION PIPELINE</div>
+                    <h2 class="panel-title">Teleportation-Based Quantum Digital Signatures</h2>
+                    <p class="panel-description" id="stage-detail-desc">
+                        Alice shares an entangled Bell state |Φ⁺⟩ with Bob and Charlie. 
+                        By measuring her unknown signature state |ψ⟩ jointly with her Bell qubit, 
+                        the signature collapses and classical bits (c₀, c₁) are transmitted to allow exact Pauli reconstruction.
+                    </p>
+                </div>
+
+                <div class="protocol-stepper-interactive">
+                    <div class="stage-step-btn active" data-step="1" onclick="selectDashboardStage(1)">
+                        <div class="step-badge">01</div>
+                        <div class="step-info">
+                            <span class="step-name">State Preparation</span>
+                            <span class="step-detail">Alice prepares secret signature qubit |ψ⟩</span>
+                        </div>
+                    </div>
+
+                    <div class="stage-step-btn" data-step="2" onclick="selectDashboardStage(2)">
+                        <div class="step-badge">02</div>
+                        <div class="step-info">
+                            <span class="step-name">Bell Entanglement</span>
+                            <span class="step-detail">Hadamard + CNOT creates Bell pair |Φ⁺⟩ on (q₁, q₂)</span>
+                        </div>
+                    </div>
+
+                    <div class="stage-step-btn" data-step="3" onclick="selectDashboardStage(3)">
+                        <div class="step-badge">03</div>
+                        <div class="step-info">
+                            <span class="step-name">Bell Measurement</span>
+                            <span class="step-detail">Alice applies CNOT & H, measuring in Bell basis</span>
+                        </div>
+                    </div>
+
+                    <div class="stage-step-btn" data-step="4" onclick="selectDashboardStage(4)">
+                        <div class="step-badge">04</div>
+                        <div class="step-info">
+                            <span class="step-name">Classical Feed (c₀, c₁)</span>
+                            <span class="step-detail">Alice broadcasts 2 classical bits along public channel</span>
+                        </div>
+                    </div>
+
+                    <div class="stage-step-btn" data-step="5" onclick="selectDashboardStage(5)">
+                        <div class="step-badge">05</div>
+                        <div class="step-info">
+                            <span class="step-name">Pauli Correction</span>
+                            <span class="step-detail">Bob applies X^c₁ · Z^c₀ conditional unitary transformation</span>
+                        </div>
+                    </div>
+
+                    <div class="stage-step-btn" data-step="6" onclick="selectDashboardStage(6)">
+                        <div class="step-badge">06</div>
+                        <div class="step-info">
+                            <span class="step-name">Projective Measurement</span>
+                            <span class="step-detail">Bob measures transformed signature state</span>
+                        </div>
+                    </div>
+
+                    <div class="stage-step-btn" data-step="7" onclick="selectDashboardStage(7)">
+                        <div class="step-badge">07</div>
+                        <div class="step-info">
+                            <span class="step-name">Verification</span>
+                            <span class="step-detail">Bob & Charlie cross-check signature eigenstate parity</span>
+                        </div>
+                    </div>
+
+                    <div class="stage-step-btn" data-step="8" onclick="selectDashboardStage(8)">
+                        <div class="step-badge">08</div>
+                        <div class="step-info">
+                            <span class="step-name">Statistical Analysis</span>
+                            <span class="step-detail">Binomial deviation & QBER threshold audit (11% cutoff)</span>
+                        </div>
+                    </div>
+
+                    <div class="stage-step-btn" data-step="9" onclick="selectDashboardStage(9)">
+                        <div class="step-badge">09</div>
+                        <div class="step-info">
+                            <span class="step-name">Final Security Decision</span>
+                            <span class="step-detail">Deterministic verdict: SECURE, SUSPICIOUS, or ATTACK DETECTED</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Interactive Bloch Sphere Preview -->
+            <div class="editorial-panel dark-viewport-panel">
+                <div class="panel-header dark-header">
+                    <div class="panel-kicker text-cyan">QUANTUM STATE AUDITOR</div>
+                    <h2 class="panel-title text-white">Interactive 3D Bloch Sphere</h2>
+                    <p class="panel-description text-slate">
+                        Visualizing the single-qubit density matrix |ψ⟩ = cos(θ/2)|0⟩ + e^(iφ)sin(θ/2)|1⟩. 
+                        Drag to rotate in 3D.
+                    </p>
+                </div>
+
+                <div class="bloch-preview-wrapper">
+                    <div id="bloch-render-target" class="bloch-3d-canvas"></div>
+                </div>
+
+                <div class="bloch-footer-controls">
+                    <div class="bloch-coordinates-bar">
+                        <span class="coord-tag">θ: <strong id="coord-theta">0.0000 rad</strong></span>
+                        <span class="coord-tag">φ: <strong id="coord-phi">0.0000 rad</strong></span>
+                        <span class="coord-tag">Purity: <strong id="coord-purity">1.0000</strong></span>
+                    </div>
+                    <div class="bloch-gate-actions">
+                        <button class="btn-gate" onclick="applyBlochPauli('X')">Pauli X</button>
+                        <button class="btn-gate" onclick="applyBlochPauli('Y')">Pauli Y</button>
+                        <button class="btn-gate" onclick="applyBlochPauli('Z')">Pauli Z</button>
+                        <button class="btn-gate" onclick="applyBlochPauli('H')">Hadamard</button>
+                        <button class="btn-gate btn-gate-reset" onclick="resetBlochView()">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/quantum_network_3d.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bloch.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize 3D Quantum Globe Centerpiece
+        const canvasEl = document.getElementById('quantum-3d-canvas');
+        if (canvasEl && typeof QuantumNetwork3D !== 'undefined') {
+            window.network3D = new QuantumNetwork3D('quantum-3d-canvas', {
+                autoRotate: true,
+                globeRadius: 5.0,
+                showCharlie: true
+            });
+        }
+        // Load initial dashboard telemetry
+        if (typeof loadDashboardData === 'function') {
+            loadDashboardData();
+        }
+    });
+</script>
+{% endblock %}

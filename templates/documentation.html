@@ -1,0 +1,351 @@
+{% extends "base.html" %}
+
+{% block title %}Technical Documentation | Q-SHIELD SIH26141{% endblock %}
+
+{% block content %}
+<div class="editorial-page doc-page">
+
+    <!-- Header -->
+    <header class="doc-header">
+        <div class="kicker-pill">
+            <span class="kicker-dot"></span>
+            <span class="kicker-text">SIH26141 · SCIENTIFIC SPECIFICATIONS</span>
+        </div>
+        <h1 class="hero-title" style="font-size: 2.4rem;">SYSTEM ARCHITECTURE & PROTOCOL REFERENCE</h1>
+        <p class="hero-description" style="max-width: 800px; margin-bottom: 12px;">
+            Mathematical foundations, quantum teleportation mechanics, environmental noise models, 
+            binomial statistical hypothesis testing, and deterministic threat evaluation rules for Quantum Digital Signatures (QDS).
+        </p>
+    </header>
+
+    <div class="doc-layout">
+
+        <!-- Left Sticky Navigation -->
+        <aside class="doc-sidebar">
+            <nav class="doc-toc">
+                <span class="toc-title">SECTIONS</span>
+                <a href="#problem" class="toc-link">1. Problem Statement</a>
+                <a href="#qds" class="toc-link">2. Quantum Digital Signatures</a>
+                <a href="#qubits" class="toc-link">3. Qubits & State Spaces</a>
+                <a href="#pauli" class="toc-link">4. Pauli Eigenstates</a>
+                <a href="#bell" class="toc-link">5. Bell States & Entanglement</a>
+                <a href="#teleportation" class="toc-link">6. Quantum Teleportation</a>
+                <a href="#measurement" class="toc-link">7. Projective Measurement</a>
+                <a href="#noise" class="toc-link">8. Noise & Decoherence Models</a>
+                <a href="#qber" class="toc-link">9. QBER Formulation</a>
+                <a href="#statistics" class="toc-link">10. Statistical Threat Detection</a>
+                <a href="#intercept" class="toc-link">11. Intercept & Resend Attack</a>
+                <a href="#forgery" class="toc-link">12. Signature Forgery</a>
+                <a href="#impersonation" class="toc-link">13. Signer Impersonation</a>
+                <a href="#replay" class="toc-link">14. Replay Attack & Nonce Audit</a>
+                <a href="#channel" class="toc-link">15. Channel Manipulation</a>
+                <a href="#architecture" class="toc-link">16. Multiparty Architecture</a>
+                <a href="#ibm" class="toc-link">17. IBM Quantum Cloud Engine</a>
+                <a href="#limitations" class="toc-link">18. Limitations & Roadmap</a>
+            </nav>
+        </aside>
+
+        <!-- Main Editorial Documentation Body -->
+        <article class="doc-content">
+
+            <!-- 1. Problem Statement -->
+            <section id="problem" class="doc-section">
+                <h2>1. Problem Statement (SIH26141)</h2>
+                <div class="callout-box">
+                    <strong>Smart India Hackathon 2026 • Problem Statement SIH26141</strong><br>
+                    <strong>Title:</strong> Quantum-Inspired Cyber Threat Detection for Digital Signature Security<br>
+                    <strong>Organization:</strong> Egreen Quanta LLP • <strong>Category:</strong> Software • <strong>Theme:</strong> Security
+                </div>
+                <p>
+                    Classical asymmetric digital signature schemes (RSA, ECDSA, Ed25519) rely on computational hardness 
+                    conjectures: prime factorization and the discrete logarithm problem. Shor’s quantum polynomial-time algorithm 
+                    theoretically breaks these schemes on fault-tolerant quantum hardware.
+                </p>
+                <p>
+                    <strong>Q-SHIELD</strong> engineers an information-theoretically verifiable protocol pipeline based on 
+                    quantum teleportation and projective verification, detecting malicious tampering, impersonation, forgery, 
+                    and eavesdropping without black-box machine learning dependencies.
+                </p>
+            </section>
+
+            <!-- 2. QDS -->
+            <section id="qds" class="doc-section">
+                <h2>2. Quantum Digital Signatures (QDS)</h2>
+                <p>
+                    Unlike Quantum Key Distribution (QKD), which secures peer-to-peer confidentiality between two parties, 
+                    <strong>Quantum Digital Signatures (QDS)</strong> guarantee three critical cryptographic properties:
+                </p>
+                <ul>
+                    <li><strong>Authenticity:</strong> Confirms that the message was signed by Alice.</li>
+                    <li><strong>Integrity:</strong> Ensures no intermediary altered the payload or quantum states.</li>
+                    <li><strong>Non-Repudiation:</strong> Prevents Alice from denying her signature to verifiers Bob and Charlie.</li>
+                </ul>
+                <div class="math-block">
+                    \text{Security Guarantee: } I(\text{Alice} : \text{Bob}) &gt; I(\text{Alice} : \text{Eve}) \implies \text{Tamper-Evident}
+                </div>
+                <a href="{{ url_for('dashboard.lab_view') }}" class="btn-try-lab">TRY IN LAB → Explore Protocol Steps</a>
+            </section>
+
+            <!-- 3. Qubits -->
+            <section id="qubits" class="doc-section">
+                <h2>3. Qubits & Two-Dimensional Hilbert Space</h2>
+                <p>
+                    The fundamental quantum information carrier is the qubit in $\mathbb{C}^2$, spanning orthonormal computational basis states $\{|0\rangle, |1\rangle\}$:
+                </p>
+                <div class="math-block">
+                    |\psi\rangle = \alpha|0\rangle + \beta|1\rangle = \cos\left(\frac{\theta}{2}\right)|0\rangle + e^{i\phi}\sin\left(\frac{\theta}{2}\right)|1\rangle
+                </div>
+                <p>
+                    Where $|\alpha|^2 + |\beta|^2 = 1$, and $(\theta, \phi)$ correspond to spherical coordinates on the Bloch Sphere.
+                </p>
+                <a href="{{ url_for('dashboard.lab_view') }}" class="btn-try-lab">TRY IN LAB → Manipulate State Angles in 3D</a>
+            </section>
+
+            <!-- 4. Pauli Eigenstates -->
+            <section id="pauli" class="doc-section">
+                <h2>4. Pauli Operators & Measurement Bases</h2>
+                <p>
+                    QDS signatures leverage mutually unbiased bases (MUBs) defined by the Pauli group $\mathcal{P}_1 = \{I, X, Y, Z\}$:
+                </p>
+                <div class="math-block">
+                    \sigma_x = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}, \quad 
+                    \sigma_y = \begin{pmatrix} 0 & -i \\ i & 0 \end{pmatrix}, \quad 
+                    \sigma_z = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
+                </div>
+                <p>
+                    The three measurement bases are:
+                </p>
+                <ul>
+                    <li><strong>Z-Basis:</strong> $\{|0\rangle, |1\rangle\}$ (Computational basis)</li>
+                    <li><strong>X-Basis:</strong> $\{|+\rangle, |-\rangle\}$ where $|\pm\rangle = \frac{1}{\sqrt{2}}(|0\rangle \pm |1\rangle)$</li>
+                    <li><strong>Y-Basis:</strong> $\{|+i\rangle, |-i\rangle\}$ where $|\pm i\rangle = \frac{1}{\sqrt{2}}(|0\rangle \pm i|1\rangle)$</li>
+                </ul>
+                <a href="{{ url_for('dashboard.lab_view') }}" class="btn-try-lab">TRY IN LAB → Apply Pauli Gates & Rotate Vector</a>
+            </section>
+
+            <!-- 5. Bell States -->
+            <section id="bell" class="doc-section">
+                <h2>5. Bell States & Maximal Entanglement</h2>
+                <p>
+                    Quantum signature distribution requires an Einstein-Podolsky-Rosen (EPR) entangled Bell resource across Alice ($q_1$) and Bob ($q_2$):
+                </p>
+                <div class="math-block">
+                    |\Phi^+\rangle = \frac{1}{\sqrt{2}}(|00\rangle + |11\rangle), \quad
+                    |\Phi^-\rangle = \frac{1}{\sqrt{2}}(|00\rangle - |11\rangle)
+                </div>
+                <div class="math-block">
+                    |\Psi^+\rangle = \frac{1}{\sqrt{2}}(|01\rangle + |10\rangle), \quad
+                    |\Psi^-\rangle = \frac{1}{\sqrt{2}}(|01\rangle - |10\rangle)
+                </div>
+                <p>
+                    Synthesized in Qiskit via a Hadamard gate on $q_1$ followed by a CNOT targeting $q_2$:
+                </p>
+                <pre class="math-block" style="color: #38bdf8;">
+q₁: ──H──■──
+         │  
+q₂: ─────■──
+                </pre>
+                <a href="{{ url_for('dashboard.lab_view') }}" class="btn-try-lab">TRY IN LAB → Generate Bell Pairs</a>
+            </section>
+
+            <!-- 6. Teleportation -->
+            <section id="teleportation" class="doc-section">
+                <h2>6. Bennett Quantum Teleportation Protocol</h2>
+                <p>
+                    Alice transmits her unknown quantum signature state $|\psi\rangle$ on $q_0$ without physical particle transfer:
+                </p>
+                <ol>
+                    <li><strong>Joint 3-Qubit State:</strong> $|\Psi_{012}\rangle = |\psi\rangle \otimes |\Phi^+\rangle_{12}$</li>
+                    <li><strong>Bell Measurement:</strong> Alice applies $\text{CNOT}(q_0, q_1)$ and $H(q_0)$, measuring in computational basis $\to (c_0, c_1) \in \{00, 01, 10, 11\}$.</li>
+                    <li><strong>Classical Channel:</strong> Alice sends 2 classical bits $(c_0, c_1)$ to Bob.</li>
+                    <li><strong>Bob Unitary Recovery:</strong> Bob executes $U = X^{c_1} Z^{c_0}$ on $q_2$, reconstituting state $|\psi\rangle$.</li>
+                </ol>
+                <div class="math-block">
+                    |\psi_{\text{out}}\rangle = X^{c_1} Z^{c_0} \cdot (c_0, c_1 \text{ projection}) \equiv |\psi_{\text{in}}\rangle
+                </div>
+                <a href="{{ url_for('dashboard.lab_view') }}" class="btn-try-lab">TRY IN LAB → Execute Teleportation</a>
+            </section>
+
+            <!-- 7. Projective Measurement -->
+            <section id="measurement" class="doc-section">
+                <h2>7. Projective Verification Measurements</h2>
+                <p>
+                    Upon Pauli reconstruction, Bob executes projective measurement in Alice's authorized secret key basis $\mathcal{B} \in \{Z, X, Y\}$:
+                </p>
+                <div class="math-block">
+                    \Pi_0 = |\psi_{\text{target}}\rangle\langle\psi_{\text{target}}|, \quad
+                    \Pi_1 = I - \Pi_0
+                </div>
+                <p>
+                    For legitimate signatures, $P(\text{Outcome } 0) = \text{Tr}(\Pi_0 \rho) \to 1.0$. 
+                    Any orthogonal count indicates an error or adversary intervention.
+                </p>
+            </section>
+
+            <!-- 8. Noise -->
+            <section id="noise" class="doc-section">
+                <h2>8. Environmental Decoherence & Noise Models</h2>
+                <p>
+                    Real optical quantum channels suffer from photon scattering and thermal decoherence. 
+                    Q-SHIELD implements Qiskit Aer depolarizing noise channels $\mathcal{E}_\lambda$:
+                </p>
+                <div class="math-block">
+                    \mathcal{E}_\lambda(\rho) = (1 - \lambda)\rho + \frac{\lambda}{3}(X\rho X + Y\rho Y + Z\rho Z)
+                </div>
+                <p>
+                    Where $\lambda \in [0.0, 0.20]$ represents the physical channel error probability.
+                </p>
+                <a href="{{ url_for('dashboard.lab_view') }}" class="btn-try-lab">TRY IN LAB → Adjust Channel Noise Slider</a>
+            </section>
+
+            <!-- 9. QBER -->
+            <section id="qber" class="doc-section">
+                <h2>9. Quantum Bit Error Rate (QBER) Formulation</h2>
+                <p>
+                    The observed Quantum Bit Error Rate compares erroneous measurements against total shots $N$:
+                </p>
+                <div class="math-block">
+                    \text{QBER} = \frac{N_{\text{error}}}{N_{\text{total}}} = \frac{N_1}{N_0 + N_1}
+                </div>
+                <p>
+                    In QDS protocols, the theoretical cutoff threshold is calibrated to <strong>$\text{QBER}_{\text{cutoff}} = 11.0\%$</strong>. 
+                    QBER values exceeding this bound indicate eavesdropping or forgery.
+                </p>
+            </section>
+
+            <!-- 10. Statistical Detection -->
+            <section id="statistics" class="doc-section">
+                <h2>10. Binomial Hypothesis Testing ($Z$-Score)</h2>
+                <p>
+                    To differentiate natural environmental noise fluctuations from active cyber attacks, 
+                    Q-SHIELD calculates the binomial standard deviation $Z$-score:
+                </p>
+                <div class="math-block">
+                    Z = \frac{\text{QBER}_{\text{observed}} - p_{\text{expected}}}{\sqrt{\frac{p_{\text{expected}}(1 - p_{\text{expected}})}{N}}}
+                </div>
+                <p>
+                    If $Z \ge 3.0\sigma$, the probability that the error spike is random noise is $p &lt; 0.0027$ (99.73% confidence), 
+                    triggering a deterministic intrusion alarm.
+                </p>
+                <a href="{{ url_for('dashboard.experiment_view') }}" class="btn-try-lab">SIMULATE ATTACK → Launch Threat Detection</a>
+            </section>
+
+            <!-- 11. Intercept & Resend -->
+            <section id="intercept" class="doc-section">
+                <h2>11. Attack: Intercept & Resend (Eve)</h2>
+                <p>
+                    Adversary Eve intercepts qubit $q_2$ in the quantum channel, measures it in an arbitrary basis, 
+                    and resends the collapsed state to Bob:
+                </p>
+                <div class="math-block">
+                    \text{Expected QBER}_{\text{Intercept}} \approx 25\% \text{ to } 50\% \gg 11.0\% \implies \text{ATTACK DETECTED}
+                </div>
+                <a href="{{ url_for('dashboard.experiment_view') }}" class="btn-try-lab">SIMULATE ATTACK → Test Intercept & Resend</a>
+            </section>
+
+            <!-- 12. Signature Forgery -->
+            <section id="forgery" class="doc-section">
+                <h2>12. Attack: Signature Forgery</h2>
+                <p>
+                    An adversary attempts to forge Alice's signature by substituting state $|\psi'\rangle = |\psi^\perp\rangle$. 
+                    Bob's projective verification yields orthogonal parity collapse:
+                </p>
+                <div class="math-block">
+                    \text{QBER}_{\text{Forgery}} \to 100.0\% \implies \text{SIGNATURE INVALID}
+                </div>
+                <a href="{{ url_for('dashboard.experiment_view') }}" class="btn-try-lab">SIMULATE ATTACK → Test Signature Forgery</a>
+            </section>
+
+            <!-- 13. Impersonation -->
+            <section id="impersonation" class="doc-section">
+                <h2>13. Attack: Signer Impersonation</h2>
+                <p>
+                    A malicious party without Alice’s private key material transmits random quantum states. 
+                    Multiparty verifiers Bob and Charlie cross-check correlation parity:
+                </p>
+                <div class="math-block">
+                    \text{Cross-Correlation Parity } \rho_{\text{Bob}} \neq \rho_{\text{Charlie}} \implies \text{ATTACK DETECTED}
+                </div>
+            </section>
+
+            <!-- 14. Replay Attack -->
+            <section id="replay" class="doc-section">
+                <h2>14. Attack: Replay & Cryptographic Nonce Ledger</h2>
+                <p>
+                    Adversaries capturing legitimate classical bits $(c_0, c_1)$ and message tokens attempt to replay the session. 
+                    Q-SHIELD invalidates replay through single-use UUIDv4 nonces stored in SQLite:
+                </p>
+                <div class="math-block">
+                    \text{Nonce } \eta \in \text{ConsumedTable} \implies \text{REPLAY DETECTED (Session Rejected)}
+                </div>
+                <a href="{{ url_for('dashboard.experiment_view') }}" class="btn-try-lab">SIMULATE ATTACK → Test Replay Attack</a>
+            </section>
+
+            <!-- 15. Channel Manipulation -->
+            <section id="channel" class="doc-section">
+                <h2>15. Attack: Physical Channel Manipulation</h2>
+                <p>
+                    Adversaries perturbing fiber cables or jamming communication induce artificial phase-damping and depolarizing errors. 
+                    Q-SHIELD tracks statistical deviation:
+                </p>
+                <div class="math-block">
+                    \text{Noise} &gt; 15\% \implies Z &gt; 3.0\sigma \implies \text{ATTACK DETECTED}
+                </div>
+            </section>
+
+            <!-- 16. Architecture -->
+            <section id="architecture" class="doc-section">
+                <h2>16. Multiparty Verification Architecture</h2>
+                <p>
+                    Q-SHIELD implements a 3-party architecture (Alice, Bob, Charlie) ensuring signature transferability. 
+                    If Alice signs a message for Bob, Bob can forward the signature to Charlie without dispute:
+                </p>
+                <pre class="math-block" style="color: #38bdf8;">
+            ┌───────────────┐
+            │ Alice(Signer) │
+            └───────┬───────┘
+                    │ Quantum Teleportation + (c0, c1)
+       ┌────────────┴────────────┐
+       ▼                         ▼
+┌───────────────┐         ┌───────────────┐
+│Bob(Verifier 1)│◄───────►│Charlie (Verif)│
+└───────────────┘  Cross  └───────────────┘
+                   Check
+                </pre>
+            </section>
+
+            <!-- 17. IBM Quantum -->
+            <section id="ibm" class="doc-section">
+                <h2>17. IBM Quantum Cloud Integration</h2>
+                <p>
+                    Q-SHIELD provides dual-backend execution:
+                </p>
+                <ul>
+                    <li><strong>Local Qiskit Aer 2.5:</strong> High-speed CPU matrix simulation with depolarizing noise models.</li>
+                    <li><strong>IBM Quantum Hardware:</strong> Real quantum superconducting hardware execution via `qiskit-ibm-runtime` when `IBM_QUANTUM_TOKEN` is configured in `.env`.</li>
+                </ul>
+                <div class="callout-box">
+                    Scientific Honesty: If no IBM Quantum API token is present in the server environment, 
+                    the system explicitly prompts the user to switch to Local Aer Simulator rather than faking hardware results.
+                </div>
+            </section>
+
+            <!-- 18. Limitations -->
+            <section id="limitations" class="doc-section">
+                <h2>18. Limitations & Future Research Roadmap</h2>
+                <p>
+                    Current prototype limitations and planned extensions:
+                </p>
+                <ul>
+                    <li><strong>Simulated Quantum Channels:</strong> Physical quantum teleportation requires cryogenic single-photon avalanche detectors (SPAD) and optical delay lines.</li>
+                    <li><strong>Decoherence Time Limits:</strong> Real hardware coherence times ($T_1 \approx 100\mu s, T_2 \approx 80\mu s$) limit signature register depth.</li>
+                    <li><strong>Roadmap:</strong> Integration of high-dimensional qudit encoding and Post-Quantum Cryptography (PQC) hybrid handshakes (ML-KEM, Falcon).</li>
+                </ul>
+            </section>
+
+        </article>
+
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,521 @@
+{% extends "base.html" %}
+
+{% block title %}Q-SHIELD | Quantum-Inspired Digital Signature Threat Detection{% endblock %}
+{% block body_class %}landing-page-body{% endblock %}
+
+{% block content %}
+<div class="landing-page-wrapper">
+
+    <!-- ============================================================
+         VIEW 1: FULL WEBSITE PRODUCT LANDING & INTRODUCTION
+    ============================================================ -->
+    <div id="view-landing" class="landing-main-view">
+        
+        <!-- Top Landing Navigation Bar -->
+        <nav class="landing-navbar">
+            <div class="landing-nav-container">
+                <div class="landing-brand">
+                    <span class="landing-logo-text">Q-SHIELD</span>
+                    <span class="landing-badge">SIH26141</span>
+                </div>
+                <div class="landing-nav-links">
+                    <a href="#foundations" class="landing-nav-link">Quantum Foundations</a>
+                    <a href="#threats" class="landing-nav-link">Threat Vectors</a>
+                    <button type="button" class="btn-nav-researcher" onclick="showAuthView()">
+                        <span>Researcher Access</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="landing-hero-section">
+            <div class="landing-hero-container">
+                
+                <div class="kicker-pill mb-3">
+                    <span class="kicker-dot"></span>
+                    <span class="kicker-text">SMART INDIA HACKATHON 2026 · PROBLEM STATEMENT SIH26141</span>
+                </div>
+
+                <h1 class="landing-hero-title">
+                    Q-SHIELD
+                </h1>
+                
+                <h2 class="landing-hero-subtitle">
+                    Quantum-Inspired Digital Signature Threat Detection
+                </h2>
+
+                <div class="landing-hero-description">
+                    <p>
+                        Q-SHIELD is a quantum-security research and simulation platform designed to help organizations model and detect threats against digital-signature communication protocols.
+                    </p>
+                    <p>
+                        It combines quantum-state simulation, Bell-state entanglement, teleportation, projective measurement, Quantum Bit Error Rate (QBER), and deterministic statistical analysis to evaluate signature integrity under adversarial conditions.
+                    </p>
+                    <p>
+                        The platform simulates and analyzes signature forgery, signer impersonation, replay attacks, eavesdropping, and quantum-channel manipulation.
+                    </p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="landing-hero-actions">
+                    <button type="button" class="btn btn-primary btn-lg" onclick="showAuthView()">
+                        <span>GET STARTED →</span>
+                    </button>
+                    <a href="#foundations" class="btn btn-outline btn-lg">
+                        <span>Explore How It Works ↓</span>
+                    </a>
+                </div>
+
+                <!-- Refined Technical Specification Strip (3 Core Metrics) -->
+                <div class="landing-specs-strip reveal-on-scroll">
+                    <div class="spec-cell">
+                        <span class="spec-label">QBER CUTOFF LIMIT</span>
+                        <span class="spec-value text-primary">≤ 11.0%</span>
+                        <span class="spec-sub">Theoretical Security Threshold</span>
+                    </div>
+                    <div class="spec-cell">
+                        <span class="spec-label">CONFIDENCE THRESHOLD</span>
+                        <span class="spec-value text-secure">Z ≥ 3.0σ</span>
+                        <span class="spec-sub">p &lt; 0.0027 Anomaly Bound</span>
+                    </div>
+                    <div class="spec-cell">
+                        <span class="spec-label">QUANTUM BACKEND</span>
+                        <span class="spec-value font-mono">Qiskit Aer</span>
+                        <span class="spec-sub">Full Statevector Matrix Simulation</span>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- Core Quantum Pillars / How It Works -->
+        <section id="foundations" class="landing-content-section">
+            <div class="landing-content-container">
+                
+                <div class="section-header-center reveal-on-scroll">
+                    <div class="kicker-pill mb-2">
+                        <span class="kicker-dot"></span>
+                        <span class="kicker-text">SCIENTIFIC FOUNDATIONS</span>
+                    </div>
+                    <h2 class="section-title-lg">How Q-SHIELD Detects Protocol Threats</h2>
+                    <p class="section-subtitle-lg">
+                        The platform replaces computational hardness assumptions with information-theoretic quantum physics and rigorous statistical mechanics.
+                    </p>
+                </div>
+
+                <div class="landing-pillars-grid">
+                    
+                    <div class="pillar-card reveal-on-scroll">
+                        <div class="pillar-num font-mono">01</div>
+                        <h3 class="pillar-title">Quantum-State Simulation</h3>
+                        <p class="pillar-desc">
+                            Synthesizes single-qubit signature states |ψ⟩ = cos(θ/2)|0⟩ + e^(iφ)sin(θ/2)|1⟩ on the interactive 3D Bloch sphere, tracking exact pure and mixed density matrices.
+                        </p>
+                    </div>
+
+                    <div class="pillar-card reveal-on-scroll">
+                        <div class="pillar-num font-mono">02</div>
+                        <h3 class="pillar-title">Bell-State Entanglement</h3>
+                        <p class="pillar-desc">
+                            Distributes maximally entangled Einstein-Podolsky-Rosen (EPR) pairs |Φ⁺⟩ = (|00⟩ + |11⟩)/√2 across communication channels, forming an unbreakable correlated quantum bridge.
+                        </p>
+                    </div>
+
+                    <div class="pillar-card reveal-on-scroll">
+                        <div class="pillar-num font-mono">03</div>
+                        <h3 class="pillar-title">Quantum Teleportation</h3>
+                        <p class="pillar-desc">
+                            Executes Bennett's 3-qubit teleportation protocol to transmit signature states without physical qubit traversal, pairing joint Bell measurement with classical bit feed (c₀, c₁).
+                        </p>
+                    </div>
+
+                    <div class="pillar-card reveal-on-scroll">
+                        <div class="pillar-num font-mono">04</div>
+                        <h3 class="pillar-title">Projective Measurements</h3>
+                        <p class="pillar-desc">
+                            Verifies signature parity in mutually unbiased Pauli bases (Z, X, Y). Quantum wavefunction collapse guarantees that unauthorized inspection introduces detectable errors.
+                        </p>
+                    </div>
+
+                    <div class="pillar-card reveal-on-scroll">
+                        <div class="pillar-num font-mono">05</div>
+                        <h3 class="pillar-title">Quantum Bit Error Rate (QBER)</h3>
+                        <p class="pillar-desc">
+                            Empirically measures the proportion of orthogonal measurement outcomes against the theoretical 11.0% cutoff, precisely separating natural noise from active eavesdropping.
+                        </p>
+                    </div>
+
+                    <div class="pillar-card reveal-on-scroll">
+                        <div class="pillar-num font-mono">06</div>
+                        <h3 class="pillar-title">Statistical Hypothesis Testing</h3>
+                        <p class="pillar-desc">
+                            Applies binomial standard deviation Z-scores to measurement distributions (Z ≥ 3.0σ), ensuring deterministic threat alerts with 99.73% statistical confidence without black-box ML.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Threat Vectors Section -->
+        <section id="threats" class="landing-content-section bg-subtle">
+            <div class="landing-content-container">
+                
+                <div class="section-header-center reveal-on-scroll">
+                    <div class="kicker-pill mb-2">
+                        <span class="kicker-dot"></span>
+                        <span class="kicker-text">CYBERSECURITY ATTACK SURFACE</span>
+                    </div>
+                    <h2 class="section-title-lg">Detectable Cyber Threat Vectors</h2>
+                    <p class="section-subtitle-lg">
+                        Five critical attack scenarios simulated, analyzed, and audited against deterministic verification criteria.
+                    </p>
+                </div>
+
+                <div class="landing-threats-grid">
+                    
+                    <div class="threat-summary-card reveal-on-scroll">
+                        <div class="threat-card-top">
+                            <span class="threat-pill threat-danger">THREAT VECTOR 01</span>
+                            <span class="font-mono text-xs">Parity Collapse</span>
+                        </div>
+                        <h3 class="threat-card-title">Signature Forgery</h3>
+                        <p class="threat-card-desc">
+                            Adversaries attempting to forge Alice's signature alter the quantum payload state (|ψ'⟩ ≠ |ψ⟩). Bob's projective verification collapses to orthogonal parity, yielding ~100% QBER and immediate signature rejection.
+                        </p>
+                    </div>
+
+                    <div class="threat-summary-card reveal-on-scroll">
+                        <div class="threat-card-top">
+                            <span class="threat-pill threat-danger">THREAT VECTOR 02</span>
+                            <span class="font-mono text-xs">Entanglement Mismatch</span>
+                        </div>
+                        <h3 class="threat-card-title">Signer Impersonation</h3>
+                        <p class="threat-card-desc">
+                            Untrusted adversaries attempting authentication without valid pre-shared entanglement material produce uncorrelated random distributions. Multiparty verification between Bob and Charlie flags the identity.
+                        </p>
+                    </div>
+
+                    <div class="threat-summary-card reveal-on-scroll">
+                        <div class="threat-card-top">
+                            <span class="threat-pill threat-warning">THREAT VECTOR 03</span>
+                            <span class="font-mono text-xs">Nonce Collision</span>
+                        </div>
+                        <h3 class="threat-card-title">Replay Attacks</h3>
+                        <p class="threat-card-desc">
+                            Adversaries capturing and re-transmitting legitimate classical bits (c₀, c₁) are detected by Q-SHIELD's cryptographic single-use UUIDv4 nonce ledger in SQLite, halting replay attempts with zero traceback.
+                        </p>
+                    </div>
+
+                    <div class="threat-summary-card reveal-on-scroll">
+                        <div class="threat-card-top">
+                            <span class="threat-pill threat-danger">THREAT VECTOR 04</span>
+                            <span class="font-mono text-xs">Wavefunction Collapse</span>
+                        </div>
+                        <h3 class="threat-card-title">Intercept & Resend (Eve)</h3>
+                        <p class="threat-card-desc">
+                            Adversary Eve taps the quantum channel to measure in-flight qubits. Measurement collapses the entangled Bell pair, inducing ~25% to 50% QBER, drastically exceeding the 11.0% cutoff and triggering an alert.
+                        </p>
+                    </div>
+
+                    <div class="threat-summary-card reveal-on-scroll">
+                        <div class="threat-card-top">
+                            <span class="threat-pill threat-warning">THREAT VECTOR 05</span>
+                            <span class="font-mono text-xs">Depolarizing Noise</span>
+                        </div>
+                        <h3 class="threat-card-title">Channel Manipulation</h3>
+                        <p class="threat-card-desc">
+                            Environmental decoherence, thermal turbulence, or physical fiber tampering forcing depolarizing errors beyond safe margins (≥15%) are classified as anomalies through statistical Z-score elevation (Z ≥ 3.0σ).
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Final Landing Call-to-Action Banner -->
+        <section class="landing-cta-banner reveal-on-scroll">
+            <div class="landing-cta-container">
+                <h2 class="cta-title">Ready to Audit Quantum Digital Signature Security?</h2>
+                <p class="cta-desc">
+                    Access the live 3D quantum network centerpiece, test all 6 protocol modules in the Quantum Lab, and execute deterministic attack audits.
+                </p>
+                <div class="cta-actions">
+                    <button type="button" class="btn btn-primary btn-lg" onclick="showAuthView()">
+                        <span>ENTER RESEARCHER CONSOLE →</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Professional Footer -->
+        <footer class="landing-footer">
+            <div class="landing-footer-container">
+                <div class="footer-left">
+                    <span class="font-bold">Q-SHIELD</span>
+                    <span class="footer-sep">•</span>
+                    <span>Smart India Hackathon 2026</span>
+                    <span class="footer-sep">•</span>
+                    <span>Problem Statement SIH26141</span>
+                </div>
+                <div class="footer-right">
+                    <span>Egreen Quanta LLP · Quantum Cybersecurity Research</span>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+         VIEW 2: RESEARCHER AUTHENTICATION (TWO-COLUMN PROFESSIONAL PORTAL)
+    ============================================================ -->
+    <div id="view-auth" class="landing-auth-view" style="display: none;">
+        <div class="auth-page-container">
+            
+            <!-- Left Side: Scientific & Security Overview -->
+            <div class="auth-left-brand">
+                <div class="auth-brand-top">
+                    <div class="auth-brand-logo">
+                        <span class="auth-logo-text">Q-SHIELD</span>
+                        <span class="landing-badge">SIH26141</span>
+                    </div>
+                    <div class="auth-mission-badge">SECURE RESEARCH ACCESS</div>
+                    <h2 class="auth-left-title">Access the Quantum-Security Simulation Environment</h2>
+                    <p class="auth-left-desc">
+                        Run quantum protocol experiments, evaluate digital-signature threats, and inspect deterministic security analysis.
+                    </p>
+                </div>
+
+                <div class="auth-highlights-list">
+                    <div class="auth-highlight-item">
+                        <div class="highlight-bullet"></div>
+                        <div class="highlight-content">
+                            <strong class="highlight-title">Qiskit Quantum Simulation</strong>
+                            <p class="highlight-text">Full statevector matrix calculation simulating pure and mixed density states.</p>
+                        </div>
+                    </div>
+                    <div class="auth-highlight-item">
+                        <div class="highlight-bullet"></div>
+                        <div class="highlight-content">
+                            <strong class="highlight-title">QBER-Based Threat Analysis</strong>
+                            <p class="highlight-text">Real-time detection against theoretical 11.0% cutoff bounds.</p>
+                        </div>
+                    </div>
+                    <div class="auth-highlight-item">
+                        <div class="highlight-bullet"></div>
+                        <div class="highlight-content">
+                            <strong class="highlight-title">Persistent Security Experiment History</strong>
+                            <p class="highlight-text">Cryptographic SQLite audit ledger tracking all states, nonces, and verdicts.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="auth-left-footer">
+                    <span>Smart India Hackathon 2026 · Problem Statement SIH26141</span>
+                </div>
+            </div>
+
+            <!-- Right Side: Authentication Form -->
+            <div class="auth-right-form">
+                <div class="auth-card-top">
+                    <button type="button" class="btn-back-landing" onclick="showLandingView()">
+                        ← Back to Platform Overview
+                    </button>
+                    <span class="font-mono text-xs text-primary font-bold">STAGE 02 / AUTHENTICATION</span>
+                </div>
+
+                <div class="auth-header">
+                    <div class="auth-icon-box">
+                        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <circle cx="12" cy="11" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h2 class="auth-title">RESEARCHER AUTHENTICATION</h2>
+                    <p class="auth-subtitle">Sign in to access Q-SHIELD operations & quantum lab</p>
+                </div>
+
+                <div id="login-alert" class="alert alert-error" style="display: none;"></div>
+                {% if error %}
+                <div class="alert alert-error">{{ error }}</div>
+                {% endif %}
+
+                <form id="login-form" class="login-form" onsubmit="handleLoginSubmit(event)">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Researcher Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-control" 
+                            placeholder="name@qshield.security" 
+                            required 
+                            autocomplete="email"
+                            value="admin@qshield.security"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Security Key / Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-control" 
+                            placeholder="••••••••••••" 
+                            required 
+                            autocomplete="current-password"
+                            value="QShield@2026"
+                        >
+                    </div>
+
+                    <button type="submit" id="login-btn" class="btn btn-primary btn-block btn-lg mt-3">
+                        <span class="btn-text">SIGN IN • ENTER QUANTUM LAB →</span>
+                        <span class="btn-spinner" style="display: none;"></span>
+                    </button>
+                </form>
+
+                <!-- Hackathon Evaluator Quick Access Card -->
+                <div class="demo-credentials-card mt-4">
+                    <div class="demo-cred-header">
+                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <span>HACKATHON DEMO ACCESS</span>
+                    </div>
+                    <div class="demo-cred-details">
+                        <div>Email: <code>admin@qshield.security</code></div>
+                        <div>Password: <code>QShield@2026</code></div>
+                    </div>
+                    <button type="button" class="btn-link-demo" onclick="fillDemoCredentials()">Autofill Demo Credentials</button>
+                </div>
+
+                <div class="auth-card-footer">
+                    <span>Egreen Quanta LLP · Quantum Cybersecurity Research</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showAuthView() {
+    const vLanding = document.getElementById('view-landing');
+    const vAuth = document.getElementById('view-auth');
+    if (vLanding && vAuth) {
+        vLanding.style.opacity = '0';
+        vLanding.style.transition = 'opacity 0.25s ease';
+        setTimeout(() => {
+            vLanding.style.display = 'none';
+            vAuth.style.display = 'flex';
+            vAuth.style.opacity = '0';
+            vAuth.style.transform = 'translateY(15px)';
+            vAuth.style.transition = 'all 0.25s ease';
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            requestAnimationFrame(() => {
+                vAuth.style.opacity = '1';
+                vAuth.style.transform = 'translateY(0)';
+            });
+        }, 200);
+    }
+}
+
+function showLandingView() {
+    const vLanding = document.getElementById('view-landing');
+    const vAuth = document.getElementById('view-auth');
+    if (vLanding && vAuth) {
+        vAuth.style.opacity = '0';
+        vAuth.style.transition = 'opacity 0.25s ease';
+        setTimeout(() => {
+            vAuth.style.display = 'none';
+            vLanding.style.display = 'block';
+            vLanding.style.opacity = '0';
+            vLanding.style.transition = 'opacity 0.25s ease';
+            requestAnimationFrame(() => {
+                vLanding.style.opacity = '1';
+            });
+        }, 200);
+    }
+}
+
+function fillDemoCredentials() {
+    document.getElementById('email').value = 'admin@qshield.security';
+    document.getElementById('password').value = 'QShield@2026';
+    showToast('Demo credentials autofilled', 'info');
+}
+
+async function handleLoginSubmit(e) {
+    e.preventDefault();
+    const alertBox = document.getElementById('login-alert');
+    const submitBtn = document.getElementById('login-btn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnSpinner = submitBtn.querySelector('.btn-spinner');
+    
+    alertBox.style.display = 'none';
+    btnText.style.display = 'none';
+    btnSpinner.style.display = 'inline-block';
+    submitBtn.disabled = true;
+    
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            showToast('Access granted. Entering security operations...', 'success');
+            setTimeout(() => {
+                window.location.href = data.redirect || '/dashboard';
+            }, 400);
+        } else {
+            alertBox.textContent = data.error || 'Authentication failed. Please verify credentials.';
+            alertBox.style.display = 'block';
+            submitBtn.disabled = false;
+            btnText.style.display = 'inline-block';
+            btnSpinner.style.display = 'none';
+        }
+    } catch (err) {
+        alertBox.textContent = 'Network communication error. Please check server connectivity.';
+        alertBox.style.display = 'block';
+        submitBtn.disabled = false;
+        btnText.style.display = 'inline-block';
+        btnSpinner.style.display = 'none';
+    }
+}
+
+// Scroll-reveal intersection observer for public landing page
+document.addEventListener('DOMContentLoaded', () => {
+    const reveals = document.querySelectorAll('.reveal-on-scroll');
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        reveals.forEach(el => observer.observe(el));
+    } else {
+        reveals.forEach(el => el.classList.add('is-revealed'));
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,422 @@
+{% extends "base.html" %}
+
+{% block title %}Quantum Lab | Q-SHIELD Scientific Workspace{% endblock %}
+
+{% block head %}
+<!-- Three.js for 3D Quantum Network & Bloch Sphere -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="editorial-page lab-page">
+
+    <!-- Top Lab Header -->
+    <header class="lab-header">
+        <div class="lab-header-left">
+            <div class="kicker-pill">
+                <span class="kicker-dot"></span>
+                <span class="kicker-text">SIH26141 · SCIENTIFIC EXPERIMENTATION</span>
+            </div>
+            <h1 class="lab-title">QUANTUM PROTOCOL LAB</h1>
+            <p class="lab-subtitle">
+                Interactive laboratory for quantum state synthesis, Pauli operators, maximal entanglement, 
+                quantum teleportation, and decoherence noise analysis.
+            </p>
+        </div>
+    </header>
+
+    <!-- ============================================================
+         SCIENTIFIC LAB 3-COLUMN WORKSPACE:
+         [ CONTROL / STEPS ] | [ LARGE 3D VISUALIZATION ] | [ RESULTS / PARAMS ]
+    ============================================================ -->
+    <div class="lab-workspace-grid">
+
+        <!-- COLUMN 1: PROTOCOL STEPS -->
+        <aside class="lab-sidebar-steps">
+            <div class="sidebar-header">
+                <span class="sidebar-title">PROTOCOL MODULES</span>
+            </div>
+
+            <nav class="step-nav-list">
+                <button class="step-nav-btn active" data-tab="state" onclick="switchLabTab('state')">
+                    <span class="step-nav-num">01</span>
+                    <div class="step-nav-text">
+                        <span class="step-nav-name">State Lab</span>
+                        <span class="step-nav-desc">Single-qubit superposition</span>
+                    </div>
+                </button>
+
+                <button class="step-nav-btn" data-tab="pauli" onclick="switchLabTab('pauli')">
+                    <span class="step-nav-num">02</span>
+                    <div class="step-nav-text">
+                        <span class="step-nav-name">Pauli Lab</span>
+                        <span class="step-nav-desc">Unitary gate operations</span>
+                    </div>
+                </button>
+
+                <button class="step-nav-btn" data-tab="bell" onclick="switchLabTab('bell')">
+                    <span class="step-nav-num">03</span>
+                    <div class="step-nav-text">
+                        <span class="step-nav-name">Bell Lab</span>
+                        <span class="step-nav-desc">Maximal entanglement pairs</span>
+                    </div>
+                </button>
+
+                <button class="step-nav-btn" data-tab="teleport" onclick="switchLabTab('teleport')">
+                    <span class="step-nav-num">04</span>
+                    <div class="step-nav-text">
+                        <span class="step-nav-name">Teleportation Lab</span>
+                        <span class="step-nav-desc">3-qubit state transfer</span>
+                    </div>
+                </button>
+
+                <button class="step-nav-btn" data-tab="measure" onclick="switchLabTab('measure')">
+                    <span class="step-nav-num">05</span>
+                    <div class="step-nav-text">
+                        <span class="step-nav-name">Measurement Lab</span>
+                        <span class="step-nav-desc">Projective basis rotation</span>
+                    </div>
+                </button>
+
+                <button class="step-nav-btn" data-tab="noise" onclick="switchLabTab('noise')">
+                    <span class="step-nav-num">06</span>
+                    <div class="step-nav-text">
+                        <span class="step-nav-name">Noise Lab</span>
+                        <span class="step-nav-desc">Decoherence & turbulence</span>
+                    </div>
+                </button>
+            </nav>
+
+            <div class="lab-nav-footer">
+                <a href="{{ url_for('dashboard.experiment_view') }}" class="btn btn-outline-sm btn-full">
+                    Proceed to Threat Detection →
+                </a>
+            </div>
+        </aside>
+
+        <!-- COLUMN 2: LARGE INTERACTIVE VISUALIZATION (DARK VIEWPORT) -->
+        <main class="lab-main-viewport">
+            
+            <!-- Tab 1 & 2 & 5: Bloch Sphere Viewport -->
+            <div id="vis-bloch-container" class="vis-pane active">
+                <div class="vis-hud-bar">
+                    <span id="vis-bloch-title" class="vis-hud-tag">3D BLOCH SPHERE · STATE SPACE SU(2)</span>
+                    <div class="vis-hud-actions">
+                        <button class="btn-hud" onclick="resetBlochView()">Reset Camera</button>
+                    </div>
+                </div>
+                <div id="lab-bloch-canvas" class="lab-canvas-target"></div>
+            </div>
+
+            <!-- Tab 3: Bell State Entangled Qubits Viewport -->
+            <div id="vis-bell-container" class="vis-pane">
+                <div class="vis-hud-bar">
+                    <span id="vis-bell-hud-title" class="vis-hud-tag">MAXIMAL ENTANGLEMENT BRIDGE · |Φ⁺⟩ = (|00⟩ + |11⟩)/√2</span>
+                </div>
+                <div class="bell-visualizer-canvas">
+                    <!-- Bell State Title & Math Indicator Badge -->
+                    <div class="bell-state-header-badge" id="bell-state-badge">
+                        <span class="bell-state-sub">CURRENT SYNTHESIZED BELL STATE</span>
+                        <h2 class="bell-state-name font-mono" id="bell-badge-name">|Φ⁺⟩</h2>
+                        <div class="bell-state-formula font-mono" id="bell-badge-formula">|Φ⁺⟩ = (|00⟩ + |11⟩) / √2</div>
+                        <div class="bell-correlation-tag" id="bell-badge-correlation">Even Parity Correlation: Correlated (00 & 11)</div>
+                    </div>
+
+                    <div class="entangled-qubits-diagram">
+                        <div class="qubit-node-box qubit-a" id="qubit-node-a">
+                            <span class="q-label">QUBIT A (q₁)</span>
+                            <span class="q-sub">Alice Entangled Half</span>
+                            <div class="q-core-ring" id="q-ring-a"></div>
+                            <span class="q-state-val font-mono" id="q-val-a">Correlated (|0⟩/|1⟩)</span>
+                        </div>
+
+                        <div class="entanglement-pulse-beam" id="bell-beam">
+                            <div class="beam-glow" id="beam-glow"></div>
+                            <span class="beam-tag" id="beam-tag">BELL ENTANGLEMENT LINK</span>
+                            <div class="wave-particles"></div>
+                        </div>
+
+                        <div class="qubit-node-box qubit-b" id="qubit-node-b">
+                            <span class="q-label">QUBIT B (q₂)</span>
+                            <span class="q-sub">Bob Entangled Half</span>
+                            <div class="q-core-ring" id="q-ring-b"></div>
+                            <span class="q-state-val font-mono" id="q-val-b">Correlated (|0⟩/|1⟩)</span>
+                        </div>
+                    </div>
+
+                    <!-- Bell Qiskit Circuit Diagram -->
+                    <div class="qiskit-circuit-box">
+                        <div class="circuit-header-row">
+                            <span class="circuit-header">QISKIT 2.5 ENTANGLEMENT SYNTHESIS</span>
+                            <span class="circuit-backend font-mono text-cyan">AER SIMULATOR (1000 SHOTS)</span>
+                        </div>
+                        <pre class="circuit-ascii font-mono" id="bell-circuit-ascii">
+q₁: ──H──■──
+         │  
+q₂: ─────■──
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4 & 6: 3D Quantum Network Viewport -->
+            <div id="vis-network-container" class="vis-pane">
+                <div class="vis-hud-bar">
+                    <span id="vis-network-title" class="vis-hud-tag">3D QUANTUM NETWORK & TELEPORTATION CHANNEL</span>
+                    <div class="vis-hud-actions">
+                        <button class="btn-hud" onclick="if(window.labNetwork3D) window.labNetwork3D.resetView()">Reset Camera</button>
+                    </div>
+                </div>
+                <div id="lab-network-canvas" class="lab-canvas-target"></div>
+            </div>
+
+        </main>
+
+        <!-- COLUMN 3: PARAMETERS / RESULTS PANEL -->
+        <aside class="lab-sidebar-controls">
+
+            <!-- ==================== 01 STATE LAB PANEL ==================== -->
+            <div id="panel-state" class="control-tab-panel active">
+                <div class="panel-section-title">PREPARE QUANTUM STATE</div>
+                <p class="panel-section-desc">Select canonical basis poles or configure continuous spherical coordinates (θ, φ).</p>
+
+                <div class="basis-preset-grid">
+                    <button class="btn-preset active" onclick="setPresetState('|0>')">|0⟩</button>
+                    <button class="btn-preset" onclick="setPresetState('|1>')">|1⟩</button>
+                    <button class="btn-preset" onclick="setPresetState('|+>')">|+⟩</button>
+                    <button class="btn-preset" onclick="setPresetState('|->')">|-⟩</button>
+                    <button class="btn-preset" onclick="setPresetState('|+i>')">|+i⟩</button>
+                    <button class="btn-preset" onclick="setPresetState('|-i>')">|-i⟩</button>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-label-row">
+                        <span>Polar Angle θ</span>
+                        <span id="label-theta" class="font-mono">0.000 rad (0°)</span>
+                    </div>
+                    <input type="range" id="slider-theta" min="0" max="3.1416" step="0.01" value="0" oninput="onThetaChange(this.value)">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-label-row">
+                        <span>Azimuthal Angle φ</span>
+                        <span id="label-phi" class="font-mono">0.000 rad (0°)</span>
+                    </div>
+                    <input type="range" id="slider-phi" min="0" max="6.2832" step="0.01" value="0" oninput="onPhiChange(this.value)">
+                </div>
+
+                <button class="btn btn-primary btn-full mt-3" onclick="executeStatePrep()">
+                    PREPARE STATE IN SIMULATOR
+                </button>
+
+                <div class="technical-readout-card mt-4">
+                    <div class="readout-header">STATEVECTOR MATHEMATICS</div>
+                    <div class="readout-formula font-mono" id="state-formula">
+                        |ψ⟩ = 1.0000|0⟩ + 0.0000|1⟩
+                    </div>
+                    <div class="readout-stats-grid">
+                        <div class="r-stat"><span class="r-k">Purity</span><span class="r-v" id="state-purity">1.0000</span></div>
+                        <div class="r-stat"><span class="r-k">Prob |0⟩</span><span class="r-v" id="state-p0">100.0%</span></div>
+                        <div class="r-stat"><span class="r-k">Prob |1⟩</span><span class="r-v" id="state-p1">0.0%</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== 02 PAULI LAB PANEL ==================== -->
+            <div id="panel-pauli" class="control-tab-panel">
+                <div class="panel-section-title">PAULI UNITARY OPERATORS</div>
+                <p class="panel-section-desc">Apply SU(2) Pauli transformations and inspect 3D vector rotation and matrix mechanics.</p>
+
+                <div class="gate-button-group">
+                    <button class="btn-gate-large" onclick="applyPauliGate('X')">
+                        <span class="gate-symbol">σ_x (X)</span>
+                        <span class="gate-desc">Bit-Flip π around X</span>
+                    </button>
+                    <button class="btn-gate-large" onclick="applyPauliGate('Y')">
+                        <span class="gate-symbol">σ_y (Y)</span>
+                        <span class="gate-desc">Bit & Phase Flip around Y</span>
+                    </button>
+                    <button class="btn-gate-large" onclick="applyPauliGate('Z')">
+                        <span class="gate-symbol">σ_z (Z)</span>
+                        <span class="gate-desc">Phase-Flip π around Z</span>
+                    </button>
+                    <button class="btn-gate-large" onclick="applyPauliGate('H')">
+                        <span class="gate-symbol">Hadamard (H)</span>
+                        <span class="gate-desc">Superposition Basis Rotate</span>
+                    </button>
+                </div>
+
+                <div class="technical-readout-card mt-4">
+                    <div class="readout-header" id="pauli-matrix-header">OPERATOR MATRIX: PAULI X</div>
+                    <pre class="matrix-display font-mono" id="pauli-matrix-text">
+┌  0   1 ┐
+└  1   0 ┘
+                    </pre>
+                    <div class="readout-formula font-mono mt-2" id="pauli-state-transition">
+                        Initial: |0⟩  ──▶  Transformed: |1⟩
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== 03 BELL LAB PANEL ==================== -->
+            <div id="panel-bell" class="control-tab-panel">
+                <div class="panel-section-title">MAXIMAL BELL STATES</div>
+                <p class="panel-section-desc">Synthesize 2-qubit Einstein-Podolsky-Rosen (EPR) pairs.</p>
+
+                <div class="bell-selector-group">
+                    <button class="btn-bell active" onclick="selectBellState('phi_plus')">
+                        <span class="bell-name">|Φ⁺⟩ = (|00⟩ + |11⟩)/√2</span>
+                        <span class="bell-sub">Standard Teleportation Resource</span>
+                    </button>
+                    <button class="btn-bell" onclick="selectBellState('phi_minus')">
+                        <span class="bell-name">|Φ⁻⟩ = (|00⟩ - |11⟩)/√2</span>
+                        <span class="bell-sub">Phase-Inverted EPR Pair</span>
+                    </button>
+                    <button class="btn-bell" onclick="selectBellState('psi_plus')">
+                        <span class="bell-name">|Ψ⁺⟩ = (|01⟩ + |10⟩)/√2</span>
+                        <span class="bell-sub">Bit-Flipped Bell State</span>
+                    </button>
+                    <button class="btn-bell" onclick="selectBellState('psi_minus')">
+                        <span class="bell-name">|Ψ⁻⟩ = (|01⟩ - |10⟩)/√2</span>
+                        <span class="bell-sub">Singlet State (Antisymmetric)</span>
+                    </button>
+                </div>
+
+                <div class="technical-readout-card mt-4">
+                    <div class="readout-header">MEASUREMENT CORRELATION (1000 SHOTS)</div>
+                    <div class="bar-chart-row">
+                        <span class="bar-label font-mono">|00⟩</span>
+                        <div class="bar-track"><div id="bell-bar-00" class="bar-fill" style="width: 50%;"></div></div>
+                        <span id="bell-val-00" class="bar-val font-mono">50.0%</span>
+                    </div>
+                    <div class="bar-chart-row">
+                        <span class="bar-label font-mono">|11⟩</span>
+                        <div class="bar-track"><div id="bell-bar-11" class="bar-fill" style="width: 50%;"></div></div>
+                        <span id="bell-val-11" class="bar-val font-mono">50.0%</span>
+                    </div>
+                    <div class="readout-stats-grid mt-2">
+                        <div class="r-stat"><span class="r-k">Entanglement</span><span class="r-v text-secure">MAXIMAL (1.00)</span></div>
+                        <div class="r-stat"><span class="r-k">CHSH S-Value</span><span class="r-v font-mono">2.828 &gt; 2</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== 04 TELEPORTATION LAB PANEL ==================== -->
+            <div id="panel-teleport" class="control-tab-panel">
+                <div class="panel-section-title">TELEPORTATION EXECUTION</div>
+                <p class="panel-section-desc">Transfer an unknown quantum state from Alice to Bob via Bell measurement and Pauli correction.</p>
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Alice Secret Signature State</label>
+                    <select id="teleport-input-state" class="form-select" onchange="onTeleportStateChange()">
+                        <option value="zero">|0⟩ (Ground State)</option>
+                        <option value="one">|1⟩ (Excited State)</option>
+                        <option value="plus">|+⟩ = (|0⟩ + |1⟩)/√2 (Equal Superposition)</option>
+                        <option value="minus">|-⟩ = (|0⟩ - |1⟩)/√2 (Phase Inverted)</option>
+                        <option value="plus_i">|+i⟩ = (|0⟩ + i|1⟩)/√2 (Y-Eigenstate)</option>
+                        <option value="minus_i">|-i⟩ = (|0⟩ - i|1⟩)/√2 (Negative Y-Eigenstate)</option>
+                        <option value="custom">Prepared State (from State Lab)</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary btn-full" onclick="runTeleportationSequence()">
+                    EXECUTE TELEPORTATION PROTOCOL
+                </button>
+
+                <div class="technical-readout-card mt-4">
+                    <div class="readout-header">EXECUTION TELEMETRY</div>
+                    <div class="readout-stats-grid">
+                        <div class="r-stat"><span class="r-k">Alice State</span><span class="r-v font-mono" id="tele-alice-state">|0⟩ (Ground)</span></div>
+                        <div class="r-stat"><span class="r-k">Bell Measurement</span><span class="r-v font-mono" id="tele-bits">c₀=0, c₁=0</span></div>
+                        <div class="r-stat"><span class="r-k">Pauli Correction</span><span class="r-v font-mono text-cyan" id="tele-pauli">I (Identity)</span></div>
+                        <div class="r-stat"><span class="r-k">Bob Reconstructed</span><span class="r-v font-mono" id="tele-final">|ψ⟩_Bob = |0⟩</span></div>
+                        <div class="r-stat"><span class="r-k">Teleport Fidelity</span><span class="r-v text-secure" id="tele-fidelity">100.0%</span></div>
+                        <div class="r-stat"><span class="r-k">Verification Result</span><span class="r-v text-secure" id="tele-verif">VERIFIED (100%)</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== 05 MEASUREMENT LAB PANEL ==================== -->
+            <div id="panel-measure" class="control-tab-panel">
+                <div class="panel-section-title">PROJECTIVE MEASUREMENT</div>
+                <p class="panel-section-desc">Rotate quantum state into measurement basis and observe wavefunction collapse.</p>
+
+                <div class="basis-preset-grid">
+                    <button class="btn-preset active" onclick="setMeasurementBasis('Z')">
+                        <span class="basis-name font-mono">Z-Basis</span>
+                        <span class="basis-sub">Computational</span>
+                    </button>
+                    <button class="btn-preset" onclick="setMeasurementBasis('X')">
+                        <span class="basis-name font-mono">X-Basis</span>
+                        <span class="basis-sub">Hadamard</span>
+                    </button>
+                    <button class="btn-preset" onclick="setMeasurementBasis('Y')">
+                        <span class="basis-name font-mono">Y-Basis</span>
+                        <span class="basis-sub">Circular</span>
+                    </button>
+                </div>
+
+                <button class="btn btn-primary btn-full mt-3" onclick="executeProjectiveMeasurement()">
+                    PERFORM 1000 SHOTS PROJECTION
+                </button>
+
+                <div class="technical-readout-card mt-4">
+                    <div class="readout-header">MEASUREMENT PROBABILITIES</div>
+                    <div class="bar-chart-row">
+                        <span class="bar-label font-mono">|0⟩</span>
+                        <div class="bar-track"><div id="meas-bar-0" class="bar-fill" style="width: 100%;"></div></div>
+                        <span id="meas-val-0" class="bar-val font-mono">100.0%</span>
+                    </div>
+                    <div class="bar-chart-row">
+                        <span class="bar-label font-mono">|1⟩</span>
+                        <div class="bar-track"><div id="meas-bar-1" class="bar-fill" style="width: 0%;"></div></div>
+                        <span id="meas-val-1" class="bar-val font-mono">0.0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== 06 NOISE LAB PANEL ==================== -->
+            <div id="panel-noise" class="control-tab-panel">
+                <div class="panel-section-title">CHANNEL DECOHERENCE</div>
+                <p class="panel-section-desc">Simulate environmental depolarizing noise and observe channel disturbance & QBER growth.</p>
+
+                <div class="slider-group">
+                    <div class="slider-label-row">
+                        <span>CHANNEL NOISE LEVEL</span>
+                        <span id="label-noise" class="font-mono text-cyan">2.0%</span>
+                    </div>
+                    <input type="range" id="slider-noise" min="0" max="0.20" step="0.01" value="0.02" oninput="onNoiseSliderChange(this.value)">
+                    <div class="slider-scale-row">
+                        <span>0% (Ideal)</span>
+                        <span>10% (Turbulent)</span>
+                        <span>20% (Critical)</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-full mt-3" onclick="executeNoiseSimulation()">
+                    MEASURE DEGRADATION (QISKIT AER)
+                </button>
+
+                <div class="technical-readout-card mt-4">
+                    <div class="readout-header">NOISE IMPACT ANALYSIS</div>
+                    <div class="readout-stats-grid">
+                        <div class="r-stat"><span class="r-k">Calibrated Noise</span><span class="r-v font-mono" id="noise-rate-val">2.0%</span></div>
+                        <div class="r-stat"><span class="r-k">Observed QBER</span><span class="r-v font-mono text-warning" id="noise-qber-val">3.40%</span></div>
+                        <div class="r-stat"><span class="r-k">State Purity</span><span class="r-v font-mono" id="noise-purity-val">0.9320</span></div>
+                        <div class="r-stat"><span class="r-k">Channel Fidelity</span><span class="r-v font-mono text-secure" id="noise-fidelity-val">96.6%</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/quantum_network_3d.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bloch.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lab.js') }}"></script>
+{% endblock %}

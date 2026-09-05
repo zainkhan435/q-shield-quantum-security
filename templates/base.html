@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Q-SHIELD | Quantum Security Operations{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=3) }}">
+    {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    {% if session.get('user_id') %}
+    <!-- Premium Minimal Navigation Bar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="{{ url_for('dashboard.dashboard_view') }}" class="brand-link">
+                    <span class="brand-logo-text">Q-SHIELD</span>
+                    <span class="brand-sub">SIH26141</span>
+                </a>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav-item {% if request.path == '/dashboard' %}active{% endif %}">Overview</a>
+                <a href="{{ url_for('dashboard.lab_view') }}" class="nav-item {% if request.path in ['/lab', '/quantum-lab'] %}active{% endif %}">Quantum Lab</a>
+                <a href="{{ url_for('dashboard.experiment_view') }}" class="nav-item {% if request.path in ['/threat-detection', '/experiment'] %}active{% endif %}">Threat Detection</a>
+                <a href="{{ url_for('dashboard.history_view') }}" class="nav-item {% if request.path == '/history' %}active{% endif %}">History</a>
+                <a href="{{ url_for('dashboard.documentation_view') }}" class="nav-item {% if request.path == '/documentation' %}active{% endif %}">Documentation</a>
+            </nav>
+
+            <div class="nav-user">
+                <div class="system-status-indicator" title="Local Qiskit Aer Simulator & IBM Quantum Channel Online">
+                    <span class="pulse-dot"></span>
+                    <span class="status-label">System Online</span>
+                </div>
+                <span class="user-pill" title="Lead Quantum Security Auditor">
+                    {{ session.get('user_email', 'admin@qshield.security') }}
+                </span>
+                <button id="logout-btn" class="btn-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </header>
+    {% endif %}
+
+    <!-- Main Application Canvas -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Core App Logic -->
+    <script>
+        // Ensure legacy dark theme preferences are cleared so default light theme is applied
+        localStorage.removeItem('theme');
+        localStorage.removeItem('dark-mode');
+        document.body.classList.remove('dark-theme', 'dark-mode');
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
